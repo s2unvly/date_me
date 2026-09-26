@@ -1,0 +1,280 @@
+d<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>데이트 해줄래? 💕</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Jua', sans-serif;
+            
+            /* [매우 중요] 마우스 커서 설정 부분 
+               반드시 하트 이미지 이름을 'heart_cursor.png'로 바꾸고 같은 폴더에 넣으세요! 
+               크기는 32x32 픽셀로 줄여야만 브라우저에서 커서로 인식합니다. */
+            cursor: url('heart_cursor.png'), auto;
+            
+            overflow-x: hidden;
+            background-color: #fdf2f8; 
+        }
+
+        /* 버튼이나 입력창에 마우스를 올려도 하트 커서가 유지되도록 강제 적용 */
+        button, input, select, .cursor-pointer {
+            cursor: url('heart_cursor.png'), pointer !important;
+        }
+
+        /* 부드러운 페이드인 애니메이션 */
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 고양이가 둥둥 떠다니는 귀여운 애니메이션 */
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* 마지막 데이트 티켓 배경 패턴 스타일 */
+        .ticket-bg {
+            background-image: 
+                radial-gradient(circle at top left, transparent 15px, white 16px),
+                radial-gradient(circle at top right, transparent 15px, white 16px),
+                radial-gradient(circle at bottom left, transparent 15px, white 16px),
+                radial-gradient(circle at bottom right, transparent 15px, white 16px);
+            background-size: 51% 51%;
+            background-repeat: no-repeat;
+            background-position: top left, top right, bottom left, bottom right;
+        }
+        
+        /* 이미지가 없을 때를 대비한 플레이스홀더 스타일 (에러 방지용) */
+        img {
+            min-height: 150px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-pink-100 via-pink-50 to-white min-h-screen flex items-center justify-center p-4">
+
+    <div id="main-card" class="bg-white/80 backdrop-blur-md rounded-[2.5rem] shadow-2xl p-8 max-w-md w-full text-center border-4 border-white relative z-10">
+        
+        <div id="section-1" class="section fade-in block">
+            <div class="flex justify-center mb-6">
+                <!-- 
+                  [매우 중요] 고양이 이미지 설정 부분
+                  반드시 고양이 사진 이름을 'cat.png'로 바꾸고 HTML 파일과 같은 폴더에 넣으세요! 
+                -->
+                <img src="cat.png" alt="귀여운 고양이 캐릭터" class="animate-float drop-shadow-md" style="max-width: 200px; height: auto;">
+            </div>
+            
+            <h1 class="text-4xl text-gray-800 mb-10 leading-relaxed">
+                민정아<br>
+                <span class="text-pink-500">나랑 데이트 해줄래?💕</span>
+            </h1>
+            
+            <div class="flex justify-center gap-4 relative min-h-[60px]">
+                <button onclick="nextSection(2)" class="bg-pink-400 hover:bg-pink-500 text-white text-2xl py-3 px-8 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95 z-20">
+                    응! 🥰
+                </button>
+                <button id="btn-no" class="bg-gray-200 text-gray-500 text-xl py-3 px-6 rounded-full shadow-sm transition-all duration-300 absolute z-50 right-0">
+                    아니..
+                </button>
+            </div>
+        </div>
+
+        <div id="section-2" class="section fade-in hidden">
+            <div class="text-7xl mb-6 animate-float">😲</div>
+            <h2 class="text-3xl text-gray-800 mb-4">잠시만.. 좋다고?? 😭</h2>
+            <p class="text-xl text-gray-500 mb-10">난 너가 싫다고 할 줄 알았어 ...</p>
+            
+            <button onclick="nextSection(3)" class="w-full bg-pink-400 hover:bg-pink-500 text-white text-2xl py-4 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95">
+                다음 ✨
+            </button>
+        </div>
+
+        <div id="section-3" class="section fade-in hidden">
+            <div class="text-6xl mb-4 animate-float">📅</div>
+            <h2 class="text-3xl text-gray-800 mb-2">그래서... 언제가 편해?</h2>
+            <p class="text-lg text-gray-500 mb-8">날짜랑 시간을 골라줘!</p>
+            
+            <div class="space-y-5 text-left mb-8">
+                <div>
+                    <label class="block text-gray-600 text-lg mb-2 pl-2">어느 날?</label>
+                    <input type="date" id="date-input" class="w-full text-xl px-4 py-3 rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-400 bg-pink-50/50 text-gray-700 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-lg mb-2 pl-2">몇 시?</label>
+                    <input type="time" id="time-input" class="w-full text-xl px-4 py-3 rounded-2xl border-2 border-pink-200 focus:outline-none focus:border-pink-400 bg-pink-50/50 text-gray-700 transition-colors">
+                </div>
+            </div>
+            
+            <button onclick="validateAndNext()" class="w-full bg-purple-400 hover:bg-purple-500 text-white text-2xl py-4 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95">
+                선택 완료 ✔️
+            </button>
+        </div>
+
+        <div id="section-4" class="section fade-in hidden">
+            <h2 class="text-3xl text-gray-800 mb-2 mt-4">그래! 이 날 뭐 땡길 것 같아?</h2>
+            <p class="text-lg text-gray-500 mb-8">난 뭐든 괜찮아 😊</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <button onclick="selectFood('한식 🍚')" class="bg-pink-50 border-2 border-pink-100 p-4 rounded-3xl hover:border-pink-400 hover:bg-pink-100 transition-all text-xl text-gray-700 shadow-sm">한식 🍚</button>
+                <button onclick="selectFood('양식 🍝')" class="bg-pink-50 border-2 border-pink-100 p-4 rounded-3xl hover:border-pink-400 hover:bg-pink-100 transition-all text-xl text-gray-700 shadow-sm">양식 🍝</button>
+                <button onclick="selectFood('중식 🍜')" class="bg-pink-50 border-2 border-pink-100 p-4 rounded-3xl hover:border-pink-400 hover:bg-pink-100 transition-all text-xl text-gray-700 shadow-sm">중식 🍜</button>
+                <button onclick="selectFood('일식 🍣')" class="bg-pink-50 border-2 border-pink-100 p-4 rounded-3xl hover:border-pink-400 hover:bg-pink-100 transition-all text-xl text-gray-700 shadow-sm">일식 🍣</button>
+                <button onclick="selectFood('카페 🍰')" class="bg-pink-50 border-2 border-pink-100 p-4 rounded-3xl hover:border-pink-400 hover:bg-pink-100 transition-all text-xl text-gray-700 shadow-sm">카페 🍰</button>
+                <button onclick="selectFood('기타 😋')" class="bg-pink-50 border-2 border-pink-100 p-4 rounded-3xl hover:border-pink-400 hover:bg-pink-100 transition-all text-xl text-gray-700 shadow-sm">기타 😋</button>
+            </div>
+        </div>
+
+        <div id="section-5" class="section fade-in hidden">
+            <h2 class="text-3xl text-pink-500 mb-2 mt-2">싫다고 안해줘서 기뻐 🚶🏻‍♀️</h2>
+            <p class="text-lg text-gray-500 mb-8">예쁘게 입고 갈거야 나 엄청 기대돼! 💕</p>
+            
+            <!-- 티켓 UI -->
+            <div class="bg-pink-300 p-2 rounded-[2rem] shadow-xl transform rotate-[-2deg] transition-transform hover:rotate-0 mb-8 mx-auto max-w-sm">
+                <div class="ticket-bg bg-white p-6 rounded-[1.5rem] text-left">
+                    <div class="border-b-2 border-dashed border-pink-300 pb-3 mb-5 flex justify-between items-end">
+                        <span class="text-2xl text-pink-600 font-bold">Date Ticket</span>
+                        <span class="text-3xl">🎫</span>
+                    </div>
+                    
+                    <div class="space-y-5 text-xl text-gray-700 pl-2">
+                        <div class="flex items-center gap-4">
+                            <span class="text-gray-400 w-12 text-lg">날짜</span>
+                            <span id="ticket-date" class="text-gray-800 font-bold"></span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="text-gray-400 w-12 text-lg">시간</span>
+                            <span id="ticket-time" class="text-gray-800 font-bold"></span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <span class="text-gray-400 w-12 text-lg">메뉴</span>
+                            <span id="ticket-food" class="text-gray-800 font-bold"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-gray-400 text-sm">이 화면을 캡쳐해서 나한테 보내줘! 📸</p>
+        </div>
+
+    </div>
+
+    <div id="error-modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50 backdrop-blur-sm transition-opacity">
+        <div class="bg-white p-8 rounded-[2rem] shadow-2xl max-w-xs w-full text-center">
+            <div class="text-5xl mb-4">🥲</div>
+            <p id="modal-text" class="text-xl text-gray-700 mb-6">날짜와 시간을 모두 선택해주세요!</p>
+            <button onclick="closeModal()" class="bg-pink-400 hover:bg-pink-500 text-white text-xl py-2 px-8 rounded-full shadow-md">
+                알겠어!
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수 설정
+        let selectedFood = '';
+        const noBtn = document.getElementById('btn-no');
+        let isNoBtnDetached = false;
+
+        // '아니' 버튼 도망가는 로직
+        function runAway(e) {
+            // 모바일 환경에서 터치 시 화면 스크롤 방지
+            if(e.type === 'touchstart') e.preventDefault();
+
+            if (!isNoBtnDetached) {
+                noBtn.style.position = 'fixed';
+                isNoBtnDetached = true;
+            }
+
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+            
+            const padding = 20;
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+            
+            const newX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const newY = Math.max(padding, Math.floor(Math.random() * maxY));
+            
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+            noBtn.style.right = 'auto'; 
+        }
+
+        // 버튼 이벤트 리스너 등록
+        noBtn.addEventListener('mouseover', runAway);
+        noBtn.addEventListener('touchstart', runAway, { passive: false });
+
+        // 다음 화면으로 넘어가는 함수
+        function nextSection(sectionNum) {
+            document.querySelectorAll('.section').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
+            });
+            
+            const target = document.getElementById('section-' + sectionNum);
+            target.classList.remove('hidden');
+            target.classList.add('block');
+        }
+
+        // 날짜와 시간 유효성 검사 후 다음 화면으로 이동
+        function validateAndNext() {
+            const date = document.getElementById('date-input').value;
+            const time = document.getElementById('time-input').value;
+            
+            if (!date || !time) {
+                showModal(); 
+                return;
+            }
+            nextSection(4);
+        }
+
+        // 음식 선택 및 티켓 데이터 입력
+        function selectFood(food) {
+            selectedFood = food;
+            
+            const date = document.getElementById('date-input').value;
+            const time = document.getElementById('time-input').value;
+            
+            document.getElementById('ticket-date').textContent = date;
+            document.getElementById('ticket-time').textContent = time;
+            document.getElementById('ticket-food').textContent = selectedFood;
+            
+            nextSection(5);
+        }
+
+        // 모달 열기/닫기 제어
+        function showModal() {
+            const modal = document.getElementById('error-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('error-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        // 페이지 로드 시 날짜 선택 최소값을 '오늘'로 설정
+        window.onload = function() {
+            const today = new Date();
+            const localDate = new Date(today.getTime() - (today.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+            document.getElementById('date-input').min = localDate;
+        }
+    </script>
+</body>
+</html>
